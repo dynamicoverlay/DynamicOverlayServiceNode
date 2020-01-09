@@ -1,0 +1,39 @@
+cache:
+    key: "${CI_BUILD_REF_NAME} node:8-alpine"
+    paths:
+    - node_modules/
+  
+  stages:
+    - release
+    - deploy
+  
+  release:
+    stage: release
+    image: docker:latest
+    only:
+      - "master"
+    services:
+      - docker:dind
+    variables:
+      DOCKER_DRIVER: "overlay"
+    before_script:
+      - docker version
+      - "docker info"
+      - "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+    script:
+      - "docker build -t ${CI_REGISTRY}/rushmead/dynamicoverlayservicenode:latest ."
+      - "docker push ${CI_REGISTRY}/rushmead/dynamicoverlayservicenode:latest"
+    after_script:
+      - "docker logout ${CI_REGISTRY}"
+  
+  deploy:
+    only:
+      - "master"
+    type: deploy
+    script:
+      - echo "${PRIVATE_KEY}" > id_rsa
+      - chmod 700 id_rsa
+      - ssh -o StrictHostKeyChecking=no -i id_rsa ${USERNAME}@${SERVER_IP} "uptime"
+      - ssh -i id_rsa ${USERNAME}@${SERVER_IP} "docker pull ${CI_REGISTRY}/rushmead/dynamicoverlayservicenode"
+      - ssh -i id_rsa ${USERNAME}@${SERVER_IP} "cd /home/minecraft/www/do && docker-compose pull && docker-compose up -d"
+  
