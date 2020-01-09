@@ -155,7 +155,7 @@ app.get('/twitch/channel/:name', async (req, res) => {
     }}).then((resp) => resp.data).catch((err) => {
         return {error: err};
     });
-    return response;
+    return res.json(response);
 });
 
 app.get('/twitch/follows/:channelID', async (req, res) => {
@@ -164,7 +164,7 @@ app.get('/twitch/follows/:channelID', async (req, res) => {
     }}).then((resp) => resp.data).catch((err) => {
         return {error: err};
     });
-    return response;
+    return res.json(response);
 });
 
 app.get('/twitch/user/:token', async (req, res) => {
@@ -174,7 +174,7 @@ app.get('/twitch/user/:token', async (req, res) => {
     }}).then((resp) => resp.data).catch((err) => {
         return {error: err};
     });
-    return response;
+    return res.json(response);
 });
 
 app.listen(port, () => console.log(`DynamicOverlay Service is now running on port ${port}`));
