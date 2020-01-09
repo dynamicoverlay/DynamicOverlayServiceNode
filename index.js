@@ -163,4 +163,14 @@ app.get('/twitch/follows/:channelID', async (req, res) => {
     return response;
 });
 
+app.get('/twitch/user/:token', async (req, res) => {
+    let response = await axios.get(`https://api.twitch.tv/helix/users`, {headers: {
+        'Client-ID': config.twitch.client_id,
+        'Authorization': `Bearer: ${req.params.token}`
+    }}).then((resp) => resp.data).catch((err) => {
+        return {error: err};
+    });
+    return response;
+});
+
 app.listen(port, () => console.log(`DynamicOverlay Service is now running on port ${port}`));
