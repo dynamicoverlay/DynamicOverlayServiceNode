@@ -90,7 +90,6 @@ async function doSpotifyRequest(data){
     }
 }
 
-
 // TWITCH
 app.get('/twitch/login', (req, res) => {
     let scopes = "";
@@ -163,6 +162,5 @@ app.get('/twitch/follows/:channelID', async (req, res) => {
     });
     return response;
 });
-
 
 app.listen(port, () => console.log(`DynamicOverlay Service is now running on port ${port}`));
