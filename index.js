@@ -47,7 +47,7 @@ app.get('/spotify/redirect', async (req, res) => {
         <body>
             <h1>Authorized</h1>
             <script type="text/javascript">
-                fetch('http://localhost:3001/spotify/token', {method: 'POST', body: "${JSON.stringify(resp)}", headers: {'Content-Type': 'application/json'}});
+                fetch('http://localhost:3001/spotify/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
             </script>
         </body>
     </html>
@@ -107,7 +107,7 @@ app.get('/twitch/redirect', async (req, res) => {
         <body>
             <h1>Authorized</h1>
             <script type="text/javascript">
-                fetch('http://localhost:3001/twitch/token', {method: 'POST', body: "${JSON.stringify(resp)}", headers: {'Content-Type': 'application/json'}});
+                fetch('http://localhost:3001/twitch/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
             </script>
         </body>
     </html>
