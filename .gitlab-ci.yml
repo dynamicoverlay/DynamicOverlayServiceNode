@@ -3,11 +3,11 @@ cache:
     paths:
     - node_modules/
   
-  stages:
+stages:
     - release
     - deploy
   
-  release:
+release:
     stage: release
     image: docker:latest
     only:
@@ -26,7 +26,7 @@ cache:
     after_script:
       - "docker logout ${CI_REGISTRY}"
   
-  deploy:
+deploy:
     only:
       - "master"
     type: deploy
@@ -36,4 +36,3 @@ cache:
       - ssh -o StrictHostKeyChecking=no -i id_rsa ${USERNAME}@${SERVER_IP} "uptime"
       - ssh -i id_rsa ${USERNAME}@${SERVER_IP} "docker pull ${CI_REGISTRY}/rushmead/dynamicoverlayservicenode"
       - ssh -i id_rsa ${USERNAME}@${SERVER_IP} "cd /home/minecraft/www/do && docker-compose pull && docker-compose up -d"
-  
