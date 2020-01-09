@@ -42,11 +42,13 @@ app.get('/spotify/login', (req, res) => {
 app.get('/spotify/redirect', async (req, res) => {
     let resp = await spotifyAuth(req.query.code);
     if(!resp.error){
-        axios.post('http://localhost:3001/spotify/token', resp);
         res.send(`
     <html>
         <body>
             <h1>Authorized</h1>
+            <script type="text/javascript">
+                fetch('http://localhost:3001/spotify/token', {method: 'POST', body: "${JSON.stringify(resp)}", headers: {'Content-Type': 'application/json'}});
+            </script>
         </body>
     </html>
     `);
@@ -100,11 +102,13 @@ app.get('/twitch/login', (req, res) => {
 app.get('/twitch/redirect', async (req, res) => {
     let resp = await twitchAuth(req.query.code);
     if(!resp.error){
-        axios.post('http://localhost:3001/twitch/token', resp);
         res.send(`
     <html>
         <body>
             <h1>Authorized</h1>
+            <script type="text/javascript">
+                fetch('http://localhost:3001/twitch/token', {method: 'POST', body: "${JSON.stringify(resp)}", headers: {'Content-Type': 'application/json'}});
+            </script>
         </body>
     </html>
     `);
