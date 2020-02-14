@@ -64,6 +64,7 @@ app.get('/spotify/redirect', async (req, res) => {
                 function go(){
                     fetch('http://localhost:3001/spotify/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
                 }
+                go();
             </script>
         </body>
     </html>
@@ -126,6 +127,7 @@ app.get('/twitch/redirect', async (req, res) => {
                 function go(){
                     fetch('http://localhost:3001/twitch/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
                 }
+                go();
             </script>
         </body>
     </html>
