@@ -24,11 +24,25 @@ let config = {
     }
 };
 
+
 if(fs.existsSync('config.json')){
     config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 } else {
     fs.writeFileSync('config.json', JSON.stringify(config));
 }
+
+app.get('/modules', async (req, res) => {
+    let response = await axios.get('https://api.github.com/repos/DynamicOverlay/OfficialModules/releases/latest').then((resp) => resp.data);
+    let modules = response.assets.map((asset) => {
+        return {
+            name: asset.name.split('.zip')[0],
+            url: asset.browser_download_url,
+            version: response.tag_name
+        }
+    })
+    return res.json(modules)
+});
+
 
 let spotifyHeader = new Buffer(config.spotify.client_id + ":" + config.spotify.client_secret).toString("base64");
 
@@ -47,7 +61,9 @@ app.get('/spotify/redirect', async (req, res) => {
         <body>
             <h1>Authorized</h1>
             <script type="text/javascript">
-                fetch('http://localhost:3001/spotify/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
+                function go(){
+                    fetch('http://localhost:3001/spotify/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
+                }
             </script>
         </body>
     </html>
@@ -107,7 +123,9 @@ app.get('/twitch/redirect', async (req, res) => {
         <body>
             <h1>Authorized</h1>
             <script type="text/javascript">
-                fetch('http://localhost:3001/twitch/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
+                function go(){
+                    fetch('http://localhost:3001/twitch/token', {method: 'POST', body: '${JSON.stringify(resp)}', headers: {'Content-Type': 'application/json'}});
+                }
             </script>
         </body>
     </html>
